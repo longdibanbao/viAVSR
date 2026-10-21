@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "viavsr-laptop"
+version = "0.1.0"
+description = "Vietnamese audio-visual speech recognition for laptop recordings"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub==0.32.4",
+    "numpy>=1.26,<3",
+    "packaging>=23",
+    "PyYAML==6.0.2",
+    "sentencepiece==0.2.0",
+    "face-alignment==1.5.0",
+    "six==1.17.0",
+    "torch==2.7.1",
+    "torchvision==0.22.1",
+    "transformers==4.52.4",
+    "soundfile==0.8.0",
+    "datasets==5.0.1",
+    "av==18.1.0",
+    "python_speech_features==0.6",
+    "scipy>=1.11,<2",
+    "jiwer>=4.0",
+    "fastapi",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "streamlit>=1.40",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+
+[tool.ruff]
+extend-exclude = ["src/viavsr/inference/vendor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"viavsr.inference.vendor.avsrcocktail" = ["LICENSE", "NOTICE.md"]
+"viavsr.preprocessing" = ["assets/*.json"]

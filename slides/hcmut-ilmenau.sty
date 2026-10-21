@@ -1,0 +1,111 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hcmut-ilmenau}[2026/08/31 Classic HCMUT Ilmenau styling]
+
+\mode<presentation>
+
+\definecolor{ClassicNavy}{HTML}{211B66}
+\definecolor{ClassicBlue}{HTML}{3933B5}
+\definecolor{ClassicBlueLight}{HTML}{514BC2}
+\definecolor{ClassicMuted}{HTML}{AAA9D0}
+\definecolor{ClassicSoft}{HTML}{EBEBF5}
+\definecolor{HCMUTLightBlue}{HTML}{198DD5}
+\definecolor{HCMUTInk}{HTML}{17212B}
+
+\setbeamercolor{normal text}{fg=HCMUTInk,bg=white}
+\setbeamercolor{structure}{fg=ClassicBlue}
+\setbeamercolor{title}{fg=white,bg=ClassicBlue}
+\setbeamercolor{subtitle}{fg=white,bg=ClassicBlue}
+\setbeamercolor{frametitle}{fg=white,bg=ClassicBlue}
+\setbeamercolor{section in head/foot}{fg=white,bg=ClassicNavy}
+\setbeamercolor{section in head/foot shaded}{fg=ClassicMuted,bg=ClassicNavy}
+\setbeamercolor{subsection in head/foot}{fg=white,bg=ClassicNavy}
+\setbeamercolor{subsection in head/foot shaded}{fg=ClassicMuted,bg=ClassicNavy}
+\setbeamercolor{mini frame}{fg=white,bg=ClassicNavy}
+\setbeamercolor{mini frame shaded}{fg=ClassicMuted,bg=ClassicNavy}
+\setbeamercolor{author in head/foot}{fg=white,bg=ClassicBlue}
+\setbeamercolor{institute in head/foot}{fg=white,bg=ClassicBlue}
+\setbeamercolor{title in head/foot}{fg=white,bg=ClassicNavy}
+\setbeamercolor{page number in head/foot}{fg=white,bg=ClassicNavy}
+\setbeamercolor{block title}{fg=white,bg=ClassicNavy}
+\setbeamercolor{block body}{fg=HCMUTInk,bg=ClassicSoft}
+\setbeamercolor{alerted text}{fg=red!85!black}
+\setbeamercolor{section in toc}{fg=ClassicBlue}
+\setbeamercolor{subsection in toc}{fg=HCMUTInk}
+\setbeamercolor{navigation symbols}{fg=ClassicMuted}
+\setbeamercolor{navigation symbols dimmed}{fg=ClassicMuted!55!white}
+
+\setbeamerfont{section in head/foot}{size=\fontsize{5.2}{6.1}\selectfont}
+\setbeamerfont{subsection in head/foot}{size=\fontsize{4.8}{5.6}\selectfont}
+\setbeamerfont{frametitle}{size=\large,series=\mdseries}
+\setbeamerfont{title}{size=\fontsize{11.3}{13.8}\selectfont,series=\bfseries}
+\setbeamerfont{author}{size=\small}
+\setbeamerfont{institute}{size=\scriptsize}
+\setbeamerfont{date}{size=\scriptsize}
+\setbeamerfont{author in head/foot}{size=\fontsize{5.5}{6.4}\selectfont}
+\setbeamerfont{institute in head/foot}{size=\fontsize{5.5}{6.4}\selectfont}
+\setbeamerfont{title in head/foot}{size=\fontsize{5.2}{6.2}\selectfont}
+\setbeamerfont{page number in head/foot}{size=\fontsize{5.2}{6.2}\selectfont}
+
+\setbeamersize{text margin left=0.65cm,text margin right=0.65cm}
+\setbeamertemplate{navigation symbols}[default]
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{section in toc}[circle]
+\setbeamertemplate{subsection in toc}[circle]
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{enumerate item}[circle]
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.65ex,dp=0.85ex,leftskip=0.65em]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[wd=0.60\paperwidth,ht=2.05ex,dp=0.72ex,leftskip=0.65em]{author in head/foot}
+      \usebeamerfont{author in head/foot}\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.40\paperwidth,ht=2.05ex,dp=0.72ex,rightskip=0.65em plus 1fil]{institute in head/foot}
+      \hfill\usebeamerfont{institute in head/foot}\insertshortinstitute
+    \end{beamercolorbox}%
+  }
+  \vskip0pt
+  \hbox{%
+    \begin{beamercolorbox}[wd=0.84\paperwidth,ht=2.05ex,dp=0.72ex,leftskip=0.65em]{title in head/foot}
+      \usebeamerfont{title in head/foot}\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.16\paperwidth,ht=2.05ex,dp=0.72ex,rightskip=0.65em plus 1fil]{page number in head/foot}
+      \hfill\usebeamerfont{page number in head/foot}\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}%
+  }
+}
+
+\newcommand{\classicsectiondivider}[1]{%
+  \begin{frame}{\insertsection}
+    \vfill
+    \begin{center}
+      {\color{HCMUTLightBlue}\rule{0.58\textwidth}{1pt}\par}
+      \vspace{0.30cm}
+      {\small #1\par}
+    \end{center}
+    \vfill
+  \end{frame}
+}
+
+\newcommand{\slidetakeaway}[1]{%
+  \vspace{0.10cm}%
+  \begin{beamercolorbox}[wd=\textwidth,sep=0.45em,rounded=true]{block body}%
+    \centering\small\bfseries #1%
+  \end{beamercolorbox}%
+}
+
+\newcommand{\slidecitation}[1]{%
+  \vfill
+  {\fontsize{4.4}{5.2}\selectfont\color{gray!85!black}#1\par}%
+}
+
+\mode<all>

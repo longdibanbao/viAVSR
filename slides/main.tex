@@ -1,0 +1,97 @@
+% !TeX program = lualatex
+% !LW recipe=Build Beamer with LuaLaTeX
+\documentclass[aspectratio=43,10pt]{beamer}
+
+\usetheme[compress]{Ilmenau}
+\usefonttheme{professionalfonts}
+
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{hcmut-ilmenau}
+
+\setsansfont{Latin Modern Sans}
+\setmainfont{Latin Modern Roman}
+
+\graphicspath{{assets/}{figures/}}
+
+\title[Vietnamese AVSR for Laptop Recording Transcription]{Vietnamese Audio-Visual Speech Recognition Using AV-HuBERT with Joint CTC/Attention Decoding for Laptop-Based Record Transcription}
+\author[Hoang Long, Gia An, Tien Dat, Gia Khanh]{Ngo Hoang Long \and Nguyen Gia An \and Nguyen Tien Dat \and Vo Van Gia Khanh}
+\institute[HCMUT -- ML IoT Lab]{Ho Chi Minh City University of Technology -- VNUHCM\\Machine Learning \& IoT Lab (ML IoT)}
+\date{September 6, 2026}
+
+\begin{document}
+
+\begin{frame}
+  \vspace{0.18cm}
+  \begin{center}
+    \begin{beamercolorbox}[wd=0.92\textwidth,sep=0.72em,center,rounded=true]{title}
+      \usebeamerfont{title}
+      Vietnamese Audio-Visual Speech Recognition\par
+      Using AV-HuBERT with Joint\par
+      CTC/Attention Decoding\par
+      for Laptop-Based Record Transcription
+    \end{beamercolorbox}
+
+    \vspace{0.12cm}
+    {\footnotesize\bfseries\color{ClassicBlue}
+      Course: Python and Machine Learning 2026 \textcolor{HCMUTInk}{-- Final Project}\par}
+    \vspace{0.14cm}
+    {\small
+      \begin{tabular}{@{}cc@{}}
+        Ngo Hoang Long & Nguyen Gia An \\
+        Nguyen Tien Dat & Vo Van Gia Khanh
+      \end{tabular}\par}
+
+    \vspace{0.20cm}
+    \makebox[\textwidth][l]{%
+      \hspace*{0.70cm}%
+      \begin{minipage}{0.88\textwidth}
+        \begin{columns}[T,onlytextwidth]
+          \begin{column}{0.47\textwidth}
+            \centering
+            \includegraphics[height=1.00cm,trim=260 100 95 50,clip]{hcmut-logo.png}\par
+            \vspace{0.08cm}
+            {\fontsize{5.8}{6.8}\selectfont\bfseries
+              Ho Chi Minh City University of Technology -- VNUHCM\par}
+          \end{column}
+          \begin{column}{0.47\textwidth}
+            \centering
+            \includegraphics[height=1.00cm]{ml-iot-logo.png}\par
+            \vspace{0.08cm}
+            {\fontsize{5.8}{6.8}\selectfont\bfseries
+              Machine Learning \& IoT Lab (ML IoT)\par}
+          \end{column}
+        \end{columns}
+      \end{minipage}%
+    }
+  \end{center}
+
+  \vfill
+  \begin{center}
+    {\scriptsize\insertdate\par}
+  \end{center}
+  \vspace{0.18cm}
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section[Background]{Background}
+\input{sections/01_background}
+
+\section[Questions]{Research Questions}
+\input{sections/02_baseline}
+
+\section[Implementation]{Implementation}
+\input{sections/03_system}
+
+\end{document}

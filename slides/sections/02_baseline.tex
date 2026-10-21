@@ -1,0 +1,76 @@
+\classicsectiondivider{BIG QUESTION: Is the current Vietnamese baseline reliable enough to be deployed as a functional demo?}
+
+\subsection{RQ1: Degradation}
+
+\begin{frame}{RQ1: How Does Missing Video Affect Recognition Accuracy?}
+  \small
+  \begin{beamercolorbox}[wd=\textwidth,sep=0.70em,center,rounded=true]{block body}
+    \textbf{Question:} How does recognition accuracy change as longer or more frequent visual gaps are introduced under laptop-recording conditions?
+  \end{beamercolorbox}
+  \vspace{0.16cm}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Evaluation setup}
+        \begin{itemize}
+          \item Keep the checkpoint, tokenizer, audio, and reference transcripts fixed.
+          \item Apply paired deterministic interval masks at increasing visual-dropout ratios.
+          \item Measure WER/CER relative to clean AV and repeat across multiple seeds.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What we want to learn}
+        \begin{itemize}
+          \item Determine whether degradation is gradual or cliff-like.
+          \item Is the released checkpoint already robust enough, or is fine-tuning needed?
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \note{[Sources] configs and outputs for the paired full-test visual-dropout protocol. No numerical result is shown here; the Implementation section answers this question.}
+\end{frame}
+
+\subsection{RQ2: Strategy}
+
+\begin{frame}{RQ2: How Should We Handle Missing Visual Frames?}
+  \scriptsize
+  Let $v_t$ be the visual input and $m_t\in\{0,1\}$ its availability ($1$: available, $0$: missing) at time step $t$.\\
+  Write $\widetilde v_t=m_tv_t$, $f_t^a=E_a(a_t)$, and $f_t^v=E_v(\widetilde v_t)$, using the same encoders as in Background.
+  \vspace{0.03cm}
+
+  \renewcommand{\arraystretch}{1.20}
+  \begin{tabularx}{\textwidth}{
+    >{\bfseries\raggedright\arraybackslash}p{0.18\textwidth}
+    >{\centering\arraybackslash}p{0.31\textwidth}
+    >{\raggedright\arraybackslash}X}
+    \toprule
+    Strategy & Fused input $x_t$ & Runtime interpretation \\
+    \midrule
+    Corrupted AV &
+    $[f_t^a;\,f_t^v]$ &
+    Zero the missing frames and let the visual encoder process the corrupted sequence. \\
+    Interval-gated AV &
+    $[f_t^a;\,m_tf_t^v]$ &
+    Zero the missing frames and suppress their visual features before fusion. \\
+    Audio-only fallback &
+    $[f_t^a;\,\mathbf{0}]\ \forall t$ &
+    Discard the visual stream for the whole utterance and decode from audio only. \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{0.06cm}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Evaluation setup}
+        Use the same utterance, audio, missing-frame mask, and dropout ratio for every strategy. Compare WER, CER, and inference time.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{What we want to learn}
+        When visual input is unreliable, is it better to explicitly suppress visual features at missing time steps, or let the model infer from the corrupted input and the remaining audio-visual context?
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \note{[Sources] AV-HuBERT.pdf, Section 3.3 and Equations 2-4; src/viavsr/inference/recognition.py. Interval gating is a project-side runtime intervention, not the original AV-HuBERT modality-dropout mechanism. No benchmark result is shown here. Notation follows Background: audio-first concatenation, v for visual input, and a tilde for modified input. Here the modification is runtime zeroing, not the pretraining replacement operation. The expression E_v(tilde v_t) is time-indexed shorthand: the visual frontend processes the sequence and can use neighboring frames, so a zero input frame need not yield a zero feature. The binary availability m_t is distinct from the sequence-level modality-dropout operator D_m.}
+\end{frame}

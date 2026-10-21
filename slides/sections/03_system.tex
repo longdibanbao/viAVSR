@@ -1,0 +1,130 @@
+\classicsectiondivider{Answering the research questions with the released Vietnamese checkpoint and paired missing-visual tests.}
+
+\subsection{RQ1 Result}
+
+\begin{frame}{RQ1 Result: Accuracy Degrades Gradually}
+  \small
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{lrr}
+    \toprule
+    Condition & Corpus WER & Change from clean \\
+    \midrule
+    Clean AV & 9.41\% & 0.00 \\
+    AV, 10\% visual dropout & 9.44\% & +0.03 \\
+    AV, 30\% visual dropout & 10.02\% & +0.61 \\
+    AV, 50\% visual dropout & 11.05\% & +1.64 \\
+    Audio-only (100\% visual dropout) & 13.64\% & +4.23 \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.12cm}
+
+  {\scriptsize Full ViCocktail test set. Audio is unchanged; only the visual stream is corrupted using deterministic interval masks.}
+  \vspace{0.18cm}
+
+  \vspace{0.25cm}
+  \begin{minipage}{0.94\textwidth}
+    \raggedright
+    Across the tested dropout levels, \textbf{recognition degrades gradually}. At 50\% visual dropout, WER rises by 1.64 percentage points from clean AV, but remains 2.59 points below audio-only. These results suggest that \textbf{partial visual input remains useful} when audio is preserved.
+  \end{minipage}
+  \vspace{0.25cm}
+
+  \note{[Sources] outputs/runpod_vicocktail_test_full_610f2a6/benchmark_report.json and results.jsonl. Dropout rows use corrupted AV; audio is unchanged and the same dropout masks are paired across modes.}
+\end{frame}
+
+\subsection{RQ2 Result}
+
+\begin{frame}{RQ2 Result: Corrupted AV Performs Best}
+  \small
+  \centering
+  \renewcommand{\arraystretch}{1.10}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Inference mode & 0\% & 10\% & 30\% & 50\% \\
+    \midrule
+    Clean AV & 9.41 & -- & -- & -- \\
+    Corrupted AV & -- & \textbf{9.44} & \textbf{10.02} & \textbf{11.05} \\
+    Interval-gated AV & -- & 9.59 & 10.29 & 11.11 \\
+    Audio only & 13.64 & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.03cm}
+
+  {\scriptsize Corpus WER (\%); identical dropout intervals and unchanged audio are used for paired comparison.}
+  \vspace{0.08cm}
+
+  \vspace{0.35cm}
+  \begin{minipage}{0.94\textwidth}
+    \raggedright
+    The results support \textbf{preserving the remaining visual input} so the model can use its learned audio-visual representations and \textbf{temporal context within the utterance}. Under the tested visual gaps, Corrupted AV gives lower WER than explicitly zeroing visual features or discarding the visual stream entirely.
+  \end{minipage}
+  \vspace{0.25cm}
+
+  \note{[Sources] outputs/runpod_vicocktail_test_full_610f2a6/benchmark_report.json and results.jsonl; src/viavsr/inference/recognition.py. Automatic routing is omitted because the comparison isolates the three underlying mechanisms directly. Temporal context refers to information across time steps within the same utterance, not surrounding sentences. The observed WER ranking supports this deployment choice but does not establish that masked pretraining caused the advantage or that the small differences over interval gating are statistically significant.}
+\end{frame}
+
+\subsection{Contributions}
+
+\begin{frame}{Contribution and Future Work}
+  \small
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Contribution}
+        \begin{itemize}
+          \setlength{\itemsep}{0.12cm}
+          \item Paired robustness evaluation on the ViCocktail test split across three missing-visual modes.
+          \item A complete pipeline from raw recordings through mouth-ROI preprocessing to CTC/Attention decoding.
+          \item A GPU-backed web demo exposing the mouth ROI, transcript, and runtime.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Future work}
+        \begin{itemize}
+          \setlength{\itemsep}{0.12cm}
+          \item Build a Vietnamese video-conferencing benchmark with paired local and received recordings from Zoom, Google Meet, and Microsoft Teams.
+          \item Evaluate compression, frame loss, audio enhancement, and A/V desynchronization.
+          \item Fine-tune the baseline and test generalization to unseen speakers and platforms.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.12cm}
+  \note{Current contributions are evaluation and engineering using the released Vietnamese checkpoint, not a newly trained model. Proposed research is inspired by Huang et al., When AVSR Meets Video Conferencing: Dataset, Degradation, and the Hidden Mechanism Behind Performance Collapse, CVPR 2026, https://arxiv.org/abs/2603.22915. That work studies VC distribution shift, including speech enhancement and transmission effects. Zoom, Google Meet, and Microsoft Teams are the team's proposed platform coverage, not a claim about the paper's evaluated platforms. Collect consented Vietnamese speech with verified transcripts, pair the source and received recordings, document device/network/platform settings, keep source utterances and speakers disjoint across splits, and hold out platforms to test transfer. This benchmark would complement ViCocktail with VC-specific conditions; superiority has not been established. Dataset collection and fine-tuning remain future work.}
+\end{frame}
+
+\subsection{Reference}
+
+\begin{frame}{Reference}
+  \footnotesize
+  \begin{list}{}{%
+    \setlength{\leftmargin}{0.60cm}%
+    \setlength{\labelwidth}{0.45cm}%
+    \setlength{\labelsep}{0.15cm}%
+    \setlength{\itemsep}{0.45cm}%
+  }
+    \item[{[1]}] B. Shi, W.-N. Hsu, K. Lakhotia, and A. Mohamed,
+      \textit{Learning audio-visual speech representation by masked multimodal cluster prediction},
+      in \textit{Proc. Int. Conf. Learn. Represent. (ICLR)}, 2022.
+
+    \item[{[2]}] T.-B. Nguyen, T. V. Nguyen, Q. T. Do, and C. M. Luong,
+      \textit{ViCocktail: Automated multi-modal data collection for Vietnamese audio-visual speech recognition},
+      in \textit{Proc. Interspeech}, 2025, pp. 166--170,
+      doi: \href{https://doi.org/10.21437/Interspeech.2025-1559}{10.21437/Interspeech.2025-1559}.
+
+    \item[{[3]}] Y. Dai \textit{et al.},
+      \textit{A study of dropout-induced modality bias on robustness to missing video frames for audio-visual speech recognition},
+      in \textit{Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR)},
+      2024, pp. 27445--27455.
+  \end{list}
+  \note{Bibliographic metadata verified against the AV-HuBERT authors' ICLR 2022 record, ISCA Archive for ViCocktail, and the CVF CVPR 2024 proceedings record. The CVPR citation uses the published CVF author list and pagination rather than the differing arXiv metadata. Paper titles are clickable.}
+\end{frame}
+
+\begin{frame}[plain]
+  \centering
+  \vfill
+  {\color{ClassicNavy}\bfseries\fontsize{27}{34}\selectfont
+    THANK YOU\\[0.22cm]
+    FOR LISTENING\par}
+  \vfill
+\end{frame}
